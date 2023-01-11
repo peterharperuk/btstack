@@ -67,6 +67,7 @@
 #include "lwip/init.h"
 #include "lwip/opt.h"
 #include "lwip/tcpip.h"
+#include "lwip/timeouts.h"
 #include "lwip/apps/fs.h"
 #include "lwip/apps/httpd.h"
 #include "dhserver.h"
@@ -334,11 +335,13 @@ static void network_setup(void){
 #endif
 
     // init lwIP stack
+    if (sys_timeouts_sleeptime() == SYS_TIMEOUTS_SLEEPTIME_INFINITE) {
 #if NO_SYS
-    lwip_init();
+        lwip_init();
 #else
-    tcpip_init(NULL, NULL);
+        tcpip_init(NULL, NULL);
 #endif
+    }
 
     // start DHCP Server
     dhserv_init(&dhcp_config);
