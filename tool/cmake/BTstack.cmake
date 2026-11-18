@@ -3,6 +3,13 @@
 # This file deliberately has no project(), target, or platform policy. A port
 # keeps those responsibilities in its own CMakeLists.txt.
 
+# These helpers use if(... IN_LIST ...). Enable it here so they also work from
+# scripts run with cmake -P, which have no cmake_minimum_required(). include()
+# gives this file its own policy scope, so this doesn't affect the includer.
+if(POLICY CMP0057)
+    cmake_policy(SET CMP0057 NEW)
+endif()
+
 get_filename_component(btstack_cmake_root "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
 include("${CMAKE_CURRENT_LIST_DIR}/BTstackSources.cmake")
 set(btstack_config_extractor "${CMAKE_CURRENT_LIST_DIR}/../extract_btstack_config.py")
