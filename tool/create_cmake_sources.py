@@ -129,10 +129,17 @@ EXPLICIT_GROUP_SOURCES = {
     "platform-embedded-hci-dump-segger-rtt": [
         "platform/embedded/hci_dump_segger_rtt_stdout.c",
     ],
-    "third-party-segger-rtt": [
+    # SEGGER RTT. third-party-segger-rtt is the complete library: it owns
+    # SEGGER_RTT_Syscalls_GCC.c, which retargets the C library's _write to RTT,
+    # and depends on the -printf and -core groups
+    "third-party-segger-rtt-core": [
         "3rd-party/segger-rtt/SEGGER_RTT.c",
-        "3rd-party/segger-rtt/SEGGER_RTT_Syscalls_GCC.c",
+    ],
+    "third-party-segger-rtt-printf": [
         "3rd-party/segger-rtt/SEGGER_RTT_printf.c",
+    ],
+    "third-party-segger-rtt": [
+        "3rd-party/segger-rtt/SEGGER_RTT_Syscalls_GCC.c",
     ],
     "lwip-core": [
         "3rd-party/lwip/core/src/core/def.c",
@@ -169,8 +176,11 @@ EXPLICIT_GROUP_SOURCES = {
     "lwip-dhcp-server": [
         "3rd-party/lwip/dhcp-server/dhserver.c",
     ],
+    # BTstack's NO_SYS lwIP port
     "lwip-platform": [
         "platform/lwip/port/sys_arch.c",
+    ],
+    "bnep-lwip": [
         "platform/lwip/bnep_lwip.c",
     ],
     "third-party-bluedroid-sbc-decoder": [
@@ -241,6 +251,7 @@ LWIP_GROUPS = [
     "lwip-httpd",
     "lwip-dhcp-server",
     "lwip-platform",
+    "bnep-lwip",
 ]
 
 BLUEDROID_SBC_GROUPS = [
@@ -283,6 +294,8 @@ GROUP_INCLUDE_DIRECTORIES = {
     "platform-embedded-hci-dump-stdout": ["platform/embedded"],
     "platform-embedded-hci-dump-segger-rtt": ["platform/embedded"],
     "third-party-segger-rtt": ["3rd-party/segger-rtt"],
+    "third-party-segger-rtt-printf": ["3rd-party/segger-rtt"],
+    "third-party-segger-rtt-core": ["3rd-party/segger-rtt"],
     # btstack_crypto.c uses these optional crypto provider headers directly.
     "core": ["3rd-party/micro-ecc", "3rd-party/rijndael"],
     # btstack_link_key_db_fs.c in this group uses tinydir's header-only API.
@@ -303,8 +316,12 @@ GROUP_INCLUDE_DIRECTORIES = {
     "lwip-platform": [
         "src",
         "3rd-party/lwip/core/src/include",
-        "platform/lwip",
         "platform/lwip/port",
+    ],
+    # No lwIP include directory: the port's chosen lwIP provides it.
+    "bnep-lwip": [
+        "src",
+        "platform/lwip",
     ],
     "lwip": [
         "src",

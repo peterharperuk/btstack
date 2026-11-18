@@ -382,11 +382,25 @@ set(btstack_group_dependencies_classic_spp_server
 # These embedded adapters use SEGGER RTT when ENABLE_SEGGER_RTT is selected
 # in the port configuration.  Keep the header and implementation in the
 # same scoped closure as the adapters that consume them.
+# Each adapter depends only on the parts of RTT it uses, so a port can take the
+# RTT core from elsewhere.
 set(btstack_group_dependencies_platform_embedded_hci_dump_segger_rtt
-    third-party-segger-rtt
+    third-party-segger-rtt-printf
 )
 set(btstack_group_dependencies_platform_embedded_stdin
-    third-party-segger-rtt
+    third-party-segger-rtt-core
+)
+set(btstack_group_dependencies_third_party_segger_rtt_printf
+    third-party-segger-rtt-core
+)
+set(btstack_group_dependencies_third_party_segger_rtt
+    third-party-segger-rtt-printf
+)
+
+# The lwIP headers and lwipopts.h come from the port's chosen lwIP
+# so there is no lwIP dependency here.
+set(btstack_group_dependencies_bnep_lwip
+    bnep
 )
 
 # During the incremental split, l2cap sources remain in the legacy core group

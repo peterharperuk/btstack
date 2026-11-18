@@ -106,7 +106,7 @@ set(BTSTACK_STM32_F4_BASE_GROUPS
     third-party-micro-ecc third-party-rijndael third-party-hxcmod
     platform-embedded-audio platform-embedded-run-loop platform-embedded-stdin
     platform-embedded-tlv-flash-bank platform-embedded-uart-block
-    platform-embedded-hci-dump-stdout)
+    platform-embedded-hci-dump-stdout third-party-segger-rtt)
 
 foreach(EXAMPLE IN LISTS EXAMPLES)
     btstack_add_application_library(
